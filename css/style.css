@@ -1,0 +1,115 @@
+.anchoBoton{
+    width: 40%;
+    
+}
+.presentacion{
+  
+    justify-content: space-around;
+    background-image: url(https://ipmark.com/wp-content/uploads/2017/05/estrategia-de-marketing-bancos.jpg);
+    align-items: center;
+    background-size:cover;
+    height: 800px; 
+    
+}
+
+.cuotas{
+    list-style: none;
+    font-weight: bold;
+    text-align: center;
+    color:rgb(67, 128, 199) ;
+    
+    
+}
+
+.cotenedor{
+    text-align: right;
+    border: solid 3px black;
+}
+
+.bordes{
+    border: solid 3px rgb(67, 128, 199);
+}
+
+.colorError{
+    color: red;
+}
+
+.colorOk{
+    color: green;
+}
+
+.visible{
+    visibility: visible;
+}
+
+.invisible{
+    display: none;
+}
+
+.banner1{
+    height: 600px;
+    background-image:url(https://us.123rf.com/450wm/violetkaipa/violetkaipa1701/violetkaipa170100043/68619288-icono-de-dinero-en-la-mano-el-concepto-de-dinero.jpg?ver=6) ;
+    background-size: cover;
+    justify-content: center;
+    color: rgb(20, 159, 194);
+    position:relative;
+    z-index: 1;
+
+    
+}
+
+.banner1::before{
+        content: "";
+        background-color:rgba(255, 255, 255, 0.6) ;
+        z-index: -1;
+        position:absolute;
+        width: 100%;
+        height: 100%;
+}
+
+.banner2{
+    justify-content: center;
+    color: rgb(20, 159, 194);
+    height: 600px;
+    background-image:url(http://cdn2.dineroenimagen.com/media/dinero/styles/xlarge/public/images/2018/06/prestamo-de-dinero.jpg) ;
+    background-size:cover ;
+    
+    position:relative;
+    z-index: 1;
+}
+    .banner2::before{
+        content: "";
+        background-color:rgba(255, 255, 255, 0.6) ;
+        z-index: -1;
+        position:absolute;
+        width: 100%;
+        height: 600px;
+        margin-left: -12px;
+        
+    }
+
+
+.banner3{
+    justify-content: center;
+    color: rgb(20, 159, 194);
+    height: 600px;
+    background-image:url(https://www.cambioeurodolar.com/wp-content/uploads/2014/01/divisasp.jpg) ;
+    background-size: cover;
+    position:relative;
+    z-index: 1;
+    
+    
+}
+.banner3::before{
+    content: "";
+    background-color:rgba(255, 255, 255, 0.6) ;
+    z-index: -1;
+    position:absolute;
+    width: 100%;
+    height: 600px;
+    margin-left: -12px;
+}
+
+.btnLarge{
+    width: 100%;
+}
