@@ -125,7 +125,7 @@ contenedor.append(titulo, datos, tablaHtml);
 let botonPrestamo = document.getElementById("botonPrestamo");
 botonPrestamo.addEventListener("click", prestamo)
 
-/* -------------------------Fin calculadora Préstamos */
+/* -------------------------Fin calculadora Préstamos------- */
 
 /* -----------Calificación empleados Empresa------------------ */
 class Nomina{
