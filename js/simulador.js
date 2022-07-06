@@ -9,12 +9,11 @@ function prestamo (){
        
          
         let cuota=document.getElementById("cuotas");
+        let errorMonto = document.createElement("p");
         
         if(monto.value>1000000){
-            let errorMonto = document.createElement("p");
             errorMonto.innerHTML = "*El monto supera el tope para solicitar";
             errorMonto.className = "colorError mt-5";
-            let contendorError = document.getElementById("errorMontoCuota");
             contendorError.appendChild(errorMonto);
             
         }
@@ -146,12 +145,11 @@ let antiguedadEmpleado = document.getElementById("antiguedadEmpleado");
 let nominaCompleta = [];
 let calificaSolaFirma=[];
 let calificaConGarantia=[];
+
 function agregar () {
-    
-    
     nominaCompleta.push(new Nomina(nombreEmpleado.value, apellidoEmpleado.value, salarioEmpleado.value, antiguedadEmpleado.value));
     formularioEmpleados.reset();
-    console.log(nominaCompleta)}
+    }
     
 let botonSiguiente = document.getElementById("siguienteEmpleado");
 botonSiguiente.addEventListener("click", agregar);
@@ -255,39 +253,31 @@ let contenedorCambio = document.getElementById("contenedorCambio");
 
 function vender (){
     contenedorCambio.innerHTML = "";
-    if(divisa.value=="Dolar"){
-        valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(30)*montoDivisa.value)
-        let resultado = document.createElement("h3");
-        resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`;
-        contenedorCambio.append(resultado);
-    }
-    else if(divisa.value=="Euro"){
-        valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(25)*montoDivisa.value)
-        let resultado = document.createElement("h3");
-        resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`;
-        contenedorCambio.append(resultado);
+    let resultado = document.createElement("h3");
+    divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(30)*montoDivisa.value),
+    resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,contenedorCambio.append(resultado));
+    
+    divisa.value=="Euro" && (
+        valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(25)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
+        contenedorCambio.append(resultado));
     }
     
-}
+
 
 let botonCompra = document.getElementById("comprarDivisas");
 botonCompra.addEventListener("click", vender)
 
 function comprar(){
     contenedorCambio.innerHTML = "";
-    if(divisa.value=="Dolar"){
-        valorTotal=(dolar.precioComprador*montoDivisa.value)
-        let resultado = document.createElement("h3");
-        resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`;
-        contenedorCambio.append(resultado);
-    }
-    else if(divisa.value=="Euro"){
-        valorTotal=(euro.precioComprador*montoDivisa.value)
-        let resultado = document.createElement("h3");
-        resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`;
-        contenedorCambio.append(resultado);
-    }
+    let resultado = document.createElement("h3");
+    divisa.value=="Dolar" && (
+        valorTotal=(dolar.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
+        contenedorCambio.append(resultado));
+    
+    divisa.value=="Euro" && (valorTotal=(euro.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
+    contenedorCambio.append(resultado));
 }
+
 let botonVender = document.getElementById("venderDivisas");
 botonVender.addEventListener("click", comprar)
 
@@ -513,3 +503,4 @@ const logIn = ( )=>{
 }
 
 btnLogInEmpleados.addEventListener("click", logIn)
+
