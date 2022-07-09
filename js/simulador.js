@@ -128,16 +128,18 @@ botonPrestamo.addEventListener("click", prestamo)
 
 /* -----------Calificación empleados Empresa------------------ */
 class Nomina{
-    constructor(nombre, apellido, salario, antiguedad){
+    constructor(dni, nombre, apellido, salario, antiguedad){
         this.nombre = nombre;
         this.apellido = apellido;
         this.salario = salario;
         this.antiguedad = antiguedad;
+        this.dni = dni;
     }
 }
 
 
 let formularioEmpleados = document.getElementById("formularioEmpleados")
+let dniEmpleado = document.getElementById("dniEmpleado");
 let nombreEmpleado = document.getElementById("nombreEmpleado");
 let apellidoEmpleado = document.getElementById("apellidoEmpleado");
 let salarioEmpleado = document.getElementById("salarioEmpleado");
@@ -147,7 +149,39 @@ let calificaSolaFirma=[];
 let calificaConGarantia=[];
 
 function agregar () {
-    nominaCompleta.push(new Nomina(nombreEmpleado.value, apellidoEmpleado.value, salarioEmpleado.value, antiguedadEmpleado.value));
+    nominaCompleta.push(new Nomina(dniEmpleado.value ,nombreEmpleado.value, apellidoEmpleado.value, salarioEmpleado.value, antiguedadEmpleado.value));
+    
+    let dni = dniEmpleado.value
+    
+    for(let i =0; i<localStorage.length; i++){
+       localStorage.key(i) == dni && (Toastify({
+        text: "Ya es cliente",
+        position: "right",
+        gravity: "top",
+        duration: 1500,
+        className: "colorBoton",
+        offset: {
+            x: 200, 
+            y: 30, 
+          },
+        
+        }).showToast(),
+        setTimeout(()=>Toastify({
+            text: "Obtiene una Tarjeta De Crédito Bonificada",
+            position: "right",
+            gravity: "top",
+            duration: 2500,
+            className: "colorTc",
+            offset: {
+                x: 200, 
+                y: 30, 
+              },
+            
+            }).showToast(), 1500)
+        )
+
+
+    }
     formularioEmpleados.reset();
     }
     
@@ -184,6 +218,7 @@ function calificar(){
         tablaHtml.className = "table table-primary table-striped col-8 m-5";
         tablaHtml.innerHTML = ` <thead>
                                 <tr>
+                                    <th scope="col">DNI</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
                                     <th scope="col">Salario</th>
@@ -196,14 +231,16 @@ function calificar(){
        
         let th = document.createElement("th");
         th.scope = "row";
-        th.innerHTML = `<th>${element.nombre}</th>`;
+        th.innerHTML = `<th>${element.dni}</th>`;
         let td = document.createElement("td");
-        td.innerHTML = `<td>${element.apellido}</td>`
+        td.innerHTML = `<td>${element.nombre}</td>`
         let td1 = document.createElement("td");
-        td1.innerHTML = `<td>${element.salario}</td>`
+        td1.innerHTML = `<td>${element.apellido}</td>`
         let td2 = document.createElement("td");
-        td2.innerHTML = `<td>${element.antiguedad}</td>`
-        filasTabla.append(th, td, td1, td2);
+        td2.innerHTML = `<td>${element.salario}</td>`
+        let td3 = document.createElement("td");
+        td3.innerHTML = `<td>${element.antiguedad}</td>`
+        filasTabla.append(th, td, td1, td2, td3);
         cuerpoTabla.append(filasTabla)
     });
     tablaHtml.appendChild(cuerpoTabla)
@@ -255,11 +292,11 @@ function vender (){
     contenedorCambio.innerHTML = "";
     let resultado = document.createElement("h3");
     divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(30)*montoDivisa.value),
-    resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,contenedorCambio.append(resultado));
+    avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
     
-    divisa.value=="Euro" && (
-        valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(25)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
-        contenedorCambio.append(resultado));
+    
+    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(25)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
+        avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
     }
     
 
@@ -270,12 +307,12 @@ botonCompra.addEventListener("click", vender)
 function comprar(){
     contenedorCambio.innerHTML = "";
     let resultado = document.createElement("h3");
-    divisa.value=="Dolar" && (
-        valorTotal=(dolar.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
-        contenedorCambio.append(resultado));
+    divisa.value=="Dolar" && (valorTotal=(dolar.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
+        avisoSweet("Usted Recibirá",`$${valorTotal}`,"info" ));
+        
     
     divisa.value=="Euro" && (valorTotal=(euro.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
-    contenedorCambio.append(resultado));
+    avisoSweet("Usted Recibirá",`$${valorTotal}`,"info" ));
 }
 
 let botonVender = document.getElementById("venderDivisas");
@@ -327,6 +364,20 @@ let btnConsultar = document.getElementById("btnConsultar");
 let tablaClientes = document.createElement("table")
 let cuerpoTablaCLientes = document.createElement("tbody")
 
+const avisoSweet = (title, text, icon) =>{
+    swal({
+        title: title,
+        text: text,
+        icon: icon,
+        button: {
+            text:"Ok!",
+            className:"colorBoton"
+        }
+      })
+}
+
+
+
 class ClienteBanco{
     constructor(dni,nombre, apellido, email, tel, dir ){
         this.dni = dni;
@@ -352,7 +403,8 @@ function carga(){
     formCarga.reset(),
     avisoError.innerHTML="",
     avisoError.innerHTML="Cliente Cargado Correctamente",
-    avisoError.className = "colorOk")):avisoError.innerHTML="Debes llenar los campos Obligatorios"
+    avisoSweet("OK!", "Cliente cargado correctamente", "success"))): avisoSweet("Error", "Debes llenar los campos Obligatorios", "error")
+    /* avisoError.innerHTML="Debes llenar los campos Obligatorios" */
     
 }
 
@@ -364,7 +416,8 @@ function consultar(){
     localStorage.getItem(clave.toString())? (nombreCliente.value = cliente.nombre,
     apellidoCliente.value = cliente.apellido, emailCliente.value = cliente.email, telCliente.value = cliente.tel, 
     dirCliente.value = cliente.dir):
-    avisoError.innerHTML="No existe cliente asociado a ese DNI" 
+    (avisoSweet("Error", "No hay cliente asociado al DNI", "error"),
+    formCarga.reset());
     
 }
 
@@ -373,7 +426,7 @@ function borrar(){
     avisoError.innerHTML="";
     let clave=dni.value;
     localStorage.removeItem(clave.toString());
-    avisoError.innerHTML="Cliente borrado satisfactoriamente"; 
+    avisoSweet("OK!", "Cliente borrado satisfactoriamente", "success"); 
     formCarga.reset();
 }
 
