@@ -79,7 +79,7 @@ function calcularTabla(capital, interes, cuotas,seguro,tna){
     let lista = document.createElement("ul")
     lista.className = "contenedor";
     let tablaHtml = document.createElement("table")
-    tablaHtml.className = "table table-primary table-striped col-8 m-5";
+    tablaHtml.className = "table table-primary table-striped col-12 m-5";
     tablaHtml.innerHTML = ` <thead>
                             <tr>
                                 <th scope="col">Cuota</th>
@@ -150,9 +150,7 @@ let calificaConGarantia=[];
 
 function agregar () {
     nominaCompleta.push(new Nomina(dniEmpleado.value ,nombreEmpleado.value, apellidoEmpleado.value, salarioEmpleado.value, antiguedadEmpleado.value));
-    
     let dni = dniEmpleado.value
-    
     for(let i =0; i<localStorage.length; i++){
        localStorage.key(i) == dni && (Toastify({
         text: "Ya es cliente",
@@ -189,8 +187,8 @@ let botonSiguiente = document.getElementById("siguienteEmpleado");
 botonSiguiente.addEventListener("click", agregar);
 
 function calificar(){
-    calificaSolaFirma=[];
-    calificaConGarantia=[];
+    let calificaSolaFirma=[];
+    let calificaConGarantia=[];
     let lista1 = nominaCompleta.filter(element => element.salario>150000 && element.antiguedad>=2);
     lista1.forEach(element => {
         calificaSolaFirma.push(element);
@@ -303,20 +301,29 @@ function pizarraOnline (valorVenta, valorCompra){
     pizarraCompraEu.innerHTML = (+(valorCompra)*1.01).toFixed(2).toString();
     dolar = new Moneda(+(valorCompra),+(valorVenta))
     euro = new Moneda (+(valorCompra)*1.01),(+(valorVenta)*1.01)
-    
 
 }
+
+/* function pizarraOnline2(dolarVenta, dolarCompra, euroVenta, euroCompra){
+    pizarraVentaUsd.innerHTML = dolarVenta;
+    pizarraCompraUsd.innerHTML = dolarCompra;
+    pizarraVentaEu.innerHTML = euroVenta;
+    pizarraCompraEu.innerHTML = euroCompra;
+    dolar = new Moneda(dolarCompra, dolarVenta);
+    euro = new Moneda (euroCompra, euroVenta);
+
+} */
 
 
 function vender (){
     contenedorCambio.innerHTML = "";
     let resultado = document.createElement("h3");
     divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(75)*montoDivisa.value),
-    avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
+    avisoSweet("Usted debe Abonar",`$${valorTotal.toFixed(2)}`,"info" ));
     
     
-    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(75)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
-        avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
+    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(75)*montoDivisa.value),
+        avisoSweet("Usted debe Abonar",`$${valorTotal.toFixed(2)}`,"info" ));
     }
     
 
@@ -327,16 +334,47 @@ botonCompra.addEventListener("click", vender)
 function comprar(){
     contenedorCambio.innerHTML = "";
     let resultado = document.createElement("h3");
-    divisa.value=="Dolar" && (valorTotal=(dolar.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
-        avisoSweet("Usted Recibirá",`$${valorTotal}`,"info" ));
+    divisa.value=="Dolar" && (valorTotal=(dolar.precioComprador*montoDivisa.value),
+        avisoSweet("Usted Recibirá",`$${valorTotal.toFixed(2)}`,"info" ));
         
     
     divisa.value=="Euro" && (valorTotal=(euro.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
-    avisoSweet("Usted Recibirá",`$${valorTotal}`,"info" ));
+    avisoSweet("Usted Recibirá",`$${valorTotal.toFixed(2)}`,"info" ));
 }
 
 let botonVender = document.getElementById("venderDivisas");
 botonVender.addEventListener("click", comprar)
+
+
+/* ----------------------Consulta API--------------------------- */
+
+/* Primer alternativa consumienda API del Banco Central con el valor del dolar actualizado---!!!Utilizar la extensión "Allow CORS: Access-Control-Allow-Origin"
+para evitar problemas con Cors */
+
+fetch("https://api.estadisticasbcra.com/usd_of_minorista", {
+    headers:{
+        Authorization: "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg",
+}
+})
+
+.then((response)=>response.json())
+.then((data)=>{
+    console.log(data);
+    console.log(data[data.length-1].v);
+    pizarraOnline(((data[data.length-1].v).toFixed(2)).toString(), (((data[data.length-1].v)-((data[data.length-1].v)*0.05)).toFixed(2)).toString())
+})
+
+/* Segunda alternativa buscadndo los datos en un archivo de ruta relativa dentro del proyecto simulando una consulta a una API*/
+
+/* fetch("js/divisas.js")
+.then((response)=>response.json())
+.then((data)=>{
+    console.log(data);
+    pizarraOnline2(data[0].pv, data[0].pc, data[1].pv, data[1].pc)
+    
+}) */
+  
+
 
 
 /* ---------------------------Fin de Conversor de Monedas----------------- */
@@ -412,17 +450,14 @@ class ClienteBanco{
 
 
 function carga(){
-   
     cuerpoTablaCLientes.innerHTML="";
     let clave = dni.value;
     let valor;
-    (clave>0 && (nombreCliente.value).length>0 && (apellidoCliente.value).length>0 && (emailCliente.value).length>0)?
-    (localStorage.getItem(clave.toString())? avisoError.innerHTML="Ya existe ese DNI": 
+    (clave>0 && (nombreCliente.value).length>0 && (apellidoCliente.value).length>0 && validator.isEmail(emailCliente.value))?
+    (localStorage.getItem(clave.toString())?avisoSweet("Error", "El DNi ya existe", "error"):  
     (valor = new ClienteBanco (dni.value, nombreCliente.value, apellidoCliente.value, emailCliente.value, telCliente.value, dirCliente.value),
     localStorage.setItem(clave.toString() , JSON.stringify(valor)),
     formCarga.reset(),
-    avisoError.innerHTML="",
-    avisoError.innerHTML="Cliente Cargado Correctamente",
     avisoSweet("OK!", "Cliente cargado correctamente", "success"))): avisoSweet("Error", "Debes llenar los campos Obligatorios", "error")
     
     
@@ -445,10 +480,13 @@ function borrar(){
     cuerpoTablaCLientes.innerHTML="";
     avisoError.innerHTML="";
     let clave=dni.value;
-    localStorage.removeItem(clave.toString());
-    avisoSweet("OK!", "Cliente borrado satisfactoriamente", "success"); 
-    formCarga.reset();
+    dni.value.length<=0?avisoSweet("Error", "Debes introducir un cliente", "error"):
+    (localStorage.removeItem(clave.toString()),
+    avisoSweet("OK!", "Cliente borrado satisfactoriamente", "success"), 
+    formCarga.reset());
 }
+
+window.scroll
 
 function listar() {
     avisoError.innerHTML="";
@@ -580,68 +618,8 @@ btnLogInEmpleados.addEventListener("click", logIn)
 
 /* --------------------------------------- */
 
-function imprimir (valor){
-    let parrafo = document.createElement("p");
-    parrafo.innerHTML = valor;
-    document.body.append(parrafo)
-}
 
 
-/* lista_prueba = [];
-let tipo;
-
-var myHeaders = new Headers();
-myHeaders.append("apikey", "I7ePdYN41TyjntTsoaTRUd40Pp7wvyoG");
-
-var requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
-  headers: myHeaders
-};
-
-fetch("https://api.apilayer.com/currency_data/convert?to=ars&from=usd&amount=40000&&to=ars&from=eur&amount=40000", requestOptions)
-  .then(response => response.json())
-  .then((result) =>{
-    console.log(result);
-    imprimir(JSON.parse(result.info.quote).toFixed(2))
-  } )
-  .catch(error => console.log('error', error));
 
 
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-    headers: myHeaders
-  };
-  
-  fetch("https://api.apilayer.com/currency_data/change?start_date={start_date}&end_date={end_date}", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error)); */
 
-    /* Authorization: BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg */
-    /* var myHeaders = new Headers();
-    myHeaders.append("Authorization", "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg");
-
-    var requestOptions = {
-        method: 'GET',
-        redirect: 'follow',
-        headers: myHeaders
-      }; */
-
-
-fetch("https://api.estadisticasbcra.com/usd_of_minorista", {
-    headers:{
-        Authorization: "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg",
-}
-})
-
-.then((response)=>response.json())
-.then((data)=>{
-    console.log(data);
-    console.log(data[data.length-1].v);
-    pizarraOnline(((data[data.length-1].v).toFixed(2)).toString(), (((data[data.length-1].v)-((data[data.length-1].v)*0.05)).toFixed(2)).toString())
-})
-
-
-  
