@@ -279,23 +279,43 @@ class Moneda{
     }
 }
 
-const dolar = new Moneda(121.75, 127.75)
-const euro = new Moneda (125.75, 132.75)
+
+
+let dolar=""
+let euro=""
 
 let montoDivisa = document.getElementById("montoCambio");
 let usd = document.getElementById("dolar");
 let eu = document.getElementById("euro");
 let divisa = document.getElementById("divisa");
 let contenedorCambio = document.getElementById("contenedorCambio");
+let pizarraCompraUsd = document.getElementById("pizarraCompraUsd");
+let pizarraVentaUsd = document.getElementById("pizarraVentaUsd");
+let pizarraCompraEu = document.getElementById("pizarraCompraEu");
+let pizarraVentaEu = document.getElementById("pizarraVentaEu");
+
+
+
+function pizarraOnline (valorVenta, valorCompra){
+    pizarraVentaUsd.innerHTML = valorVenta;
+    pizarraCompraUsd.innerHTML = valorCompra;
+    pizarraVentaEu.innerHTML = (+(valorVenta)*1.01).toFixed(2).toString();
+    pizarraCompraEu.innerHTML = (+(valorCompra)*1.01).toFixed(2).toString();
+    dolar = new Moneda(+(valorCompra),+(valorVenta))
+    euro = new Moneda (+(valorCompra)*1.01),(+(valorVenta)*1.01)
+    
+
+}
+
 
 function vender (){
     contenedorCambio.innerHTML = "";
     let resultado = document.createElement("h3");
-    divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(30)*montoDivisa.value),
+    divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(75)*montoDivisa.value),
     avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
     
     
-    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(25)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
+    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(75)*montoDivisa.value),resultado.innerHTML = `Usted debe abonar $${valorTotal.toFixed(2)}`,
         avisoSweet("Usted debe Abonar",`$${valorTotal}`,"info" ));
     }
     
@@ -404,7 +424,7 @@ function carga(){
     avisoError.innerHTML="",
     avisoError.innerHTML="Cliente Cargado Correctamente",
     avisoSweet("OK!", "Cliente cargado correctamente", "success"))): avisoSweet("Error", "Debes llenar los campos Obligatorios", "error")
-    /* avisoError.innerHTML="Debes llenar los campos Obligatorios" */
+    
     
 }
 
@@ -557,3 +577,71 @@ const logIn = ( )=>{
 
 btnLogInEmpleados.addEventListener("click", logIn)
 
+
+/* --------------------------------------- */
+
+function imprimir (valor){
+    let parrafo = document.createElement("p");
+    parrafo.innerHTML = valor;
+    document.body.append(parrafo)
+}
+
+
+/* lista_prueba = [];
+let tipo;
+
+var myHeaders = new Headers();
+myHeaders.append("apikey", "I7ePdYN41TyjntTsoaTRUd40Pp7wvyoG");
+
+var requestOptions = {
+  method: 'GET',
+  redirect: 'follow',
+  headers: myHeaders
+};
+
+fetch("https://api.apilayer.com/currency_data/convert?to=ars&from=usd&amount=40000&&to=ars&from=eur&amount=40000", requestOptions)
+  .then(response => response.json())
+  .then((result) =>{
+    console.log(result);
+    imprimir(JSON.parse(result.info.quote).toFixed(2))
+  } )
+  .catch(error => console.log('error', error));
+
+
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+    headers: myHeaders
+  };
+  
+  fetch("https://api.apilayer.com/currency_data/change?start_date={start_date}&end_date={end_date}", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error)); */
+
+    /* Authorization: BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg */
+    /* var myHeaders = new Headers();
+    myHeaders.append("Authorization", "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg");
+
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow',
+        headers: myHeaders
+      }; */
+
+
+fetch("https://api.estadisticasbcra.com/usd_of_minorista", {
+    headers:{
+        Authorization: "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg",
+}
+})
+
+.then((response)=>response.json())
+.then((data)=>{
+    console.log(data);
+    console.log(data[data.length-1].v);
+    pizarraOnline(((data[data.length-1].v).toFixed(2)).toString(), (((data[data.length-1].v)-((data[data.length-1].v)*0.05)).toFixed(2)).toString())
+})
+
+
+  
