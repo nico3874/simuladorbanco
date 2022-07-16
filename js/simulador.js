@@ -300,7 +300,7 @@ function pizarraOnline (valorVenta, valorCompra){
     pizarraVentaEu.innerHTML = (+(valorVenta)*1.01).toFixed(2).toString();
     pizarraCompraEu.innerHTML = (+(valorCompra)*1.01).toFixed(2).toString();
     dolar = new Moneda(+(valorCompra),+(valorVenta))
-    euro = new Moneda (+(valorCompra)*1.01),(+(valorVenta)*1.01)
+    euro = new Moneda ((+(valorCompra)*1.01),(+(valorVenta)*1.01))
 
 }
 
