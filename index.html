@@ -99,8 +99,13 @@
             <form class="form-control anchoBoton" action="">
                 <label class="label-control mb-3" for="">Ingresa el Monto</label>
                 <input class="form-control text-end" type="number" id="monto">
-                <label class="label-control mb-3"  for="">Ingresa la catidad de cuotas</label>
-                <input class="form-control text-end"  type="number" id="cuotas">
+                <select name="cuotas" id="cuotasPrestamoSelect" class="form-control">
+                    <option value="">Seleciona la cantidad de cuotas</option>
+                    <option value="12">12 Cuotas</option>
+                    <option value="24">24 Cuotas</option>
+                    <option value="36">36 Cuotas</option>
+                    <option value="48">48 Cuotas</option>
+                </select>
                 <button id="botonPrestamo" type="button" class="btn btn-primary btn-lg anchoBoton mt-3 ">Calcular</button>
             </form>
             
@@ -175,36 +180,23 @@
                         <h2 class="m-5"><u>Compra y venta moneda extranjera</u></h2>
                         <h4>Pizarra de cotización de Dólares y Euros en el Mercado Único de Cambio en la República Argentina</h4>
                         <table  class="table table-primary table-striped col-8 m-5">
-                            <thead>
+                            <thead id="pizarraOnline">
                             <tr>
                                 <th scope="col">Moneda</th>
                                 <th scope="col">Compra</th>
                                 <th scope="col">Venta</th>
                                 <th scope="col">Impuesto precio de Venta</th>
                             </tr>
-                            <tr>
-                                <th scope="row">Dolar</th>
-                                <td id="pizarraCompraUsd">$121,75</td>
-                                <td id="pizarraVentaUsd">$127,75</td>
-                                <td>75%</td>
                             
-                            </tr>
-                            <tr>
-                                <th scope="row">Euro</th>
-                                <td id="pizarraCompraEu">125,75</td>
-                                <td id="pizarraVentaEu">132.75</td>
-                                <td>75%</td>
-                            
-                            </tr>
+                          
                             </thead>
                         </table>
 
                         <form class="form-control" action="">
                             <input id="montoCambio" class="form-control" type="number" placeholder="Ingresa el monto para operar">
-                            <select class="form-control" name="cambio" id="divisa">
+                            <select class="form-control" name="cambio" id="opcionMonedas">
                                 <option value="">Elige la moneda</option>
-                                <option id="dolar" value="Dolar">Dolar</option>
-                                <option id="euro" value="Euro">Euro</option>
+                                
                             </select>
                             <button id="comprarDivisas" type="button"  class="btn btn-primary btn-lg anchoBoton m-2">Comprar</button>
                             <button id="venderDivisas" type="button"  class="btn btn-primary btn-lg anchoBoton m-2">Vender</button>

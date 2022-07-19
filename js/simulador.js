@@ -2,70 +2,23 @@
 
 
 function prestamo (){
+        let cuotasPrestamoSelect = document.getElementById("cuotasPrestamoSelect")
         let contenedor = document.getElementById("resultado");
-        contenedor.innerHTML = ""
+        contenedor.innerHTML = "";
         let contendorError = document.getElementById("errorMontoCuota");
         contendorError.innerHTML = "";
-       
-         
-        let cuota=document.getElementById("cuotas");
         let errorMonto = document.createElement("p");
         
-        if(monto.value>1000000){
-            errorMonto.innerHTML = "*El monto supera el tope para solicitar";
-            errorMonto.className = "colorError mt-5";
-            contendorError.appendChild(errorMonto);
-            
-        }
-        else{
-            
-            if(cuota.value>11&& cuota.value<24){
-                let tna=0.5;
-                let tem=tna/12;
-                let seguro=0.01;
-                calcularTabla(monto.value,tem, cuota.value, seguro, tna);
-               
-                
-            }
-            else if (cuota.value>23 && cuota.value<36){
-                let tna=0.6;
-                let tem=tna/12;
-                let seguro=0.012;
-                calcularTabla(monto.value,tem, cuota.value, seguro, tna);
-                
-
-            }
-            else if(cuota.value>35 && cuota.value<48){
-                let tna=0.69;
-                let tem=tna/12;
-                let seguro=0.015;
-                calcularTabla(monto.value,tem, cuota.value, seguro, tna);
-                
-            }
-            else if(cuota.value>47 && cuota.value<73){
-                let tna=0.72;
-                let tem=tna/12;
-                let seguro=0.018;
-                calcularTabla(monto.value,tem, cuota.value, seguro, tna);
-                
-                
-                
-            }
-            else if(cuota.value<12  || cuota.value>72){
-                let errorCuota = document.createElement("p");
-                errorCuota.innerHTML = "*Los valores de las cuotas están fuera de parámetro, introduzca un valor entre 12 y 72";
-                errorCuota.className = "colorError mt-5";
-                let contendorError = document.getElementById("errorMontoCuota");
-                contendorError.appendChild(errorCuota);
-               
-                
-            }
-                
-            }
-    
+        monto.value>1000000? (errorMonto.innerHTML = "*El monto supera el tope para solicitar de $1.000.000",
+            errorMonto.className = "colorError mt-5",
+            contendorError.appendChild(errorMonto)):
+            (cuotasPrestamoSelect.value =="12" &&( tna=0.5,tem=tna/12, seguro=0.01,calcularTabla(monto.value,tem, cuotasPrestamoSelect.value, seguro, tna)),
+            cuotasPrestamoSelect.value =="24" &&( tna=0.6,tem=tna/12, seguro=0.012,calcularTabla(monto.value,tem, cuotasPrestamoSelect.value, seguro, tna)),
+            cuotasPrestamoSelect.value =="36" &&( tna=0.69,tem=tna/12, seguro=0.015,calcularTabla(monto.value,tem, cuotasPrestamoSelect.value, seguro, tna)),
+            cuotasPrestamoSelect.value =="48" &&( tna=0.72,tem=tna/12, seguro=0.018,calcularTabla(monto.value,tem, cuotasPrestamoSelect.value, seguro, tna)))
        
-    
 }
+
 
 
 
@@ -256,7 +209,7 @@ botonCalificar.addEventListener("click", calificar)
 
 
 
-/* -----------------------------Fin calificador Empleado Empresas */
+/* -----------------------------Fin calificador Empleado Empresas------------------------------- */
    
     
     
@@ -264,117 +217,69 @@ botonCalificar.addEventListener("click", calificar)
 
 
 
-/* -------------------Conversor de monedas---------------- */
-
-
-class Moneda{
-    constructor (precioComprador, precioVendedor){
-        this.precioComprador = precioComprador;
-        this.precioVendedor = precioVendedor;
-        this.impuestoVenta = (porcentaje)=>{
-            return ((precioVendedor*porcentaje/100));
-        }
-    }
-}
-
-
-
-let dolar=""
-let euro=""
-
+/* -------------------Conversor de monedas Utilizando Fetch---------------- */
+let opcionMonedas = document.getElementById("opcionMonedas");
+let piazarraOnline = document.getElementById("pizarraOnline");
 let montoDivisa = document.getElementById("montoCambio");
-let usd = document.getElementById("dolar");
-let eu = document.getElementById("euro");
-let divisa = document.getElementById("divisa");
-let contenedorCambio = document.getElementById("contenedorCambio");
-let pizarraCompraUsd = document.getElementById("pizarraCompraUsd");
-let pizarraVentaUsd = document.getElementById("pizarraVentaUsd");
-let pizarraCompraEu = document.getElementById("pizarraCompraEu");
-let pizarraVentaEu = document.getElementById("pizarraVentaEu");
-
-
-
-function pizarraOnline (valorVenta, valorCompra){
-    pizarraVentaUsd.innerHTML = valorVenta;
-    pizarraCompraUsd.innerHTML = valorCompra;
-    pizarraVentaEu.innerHTML = (+(valorVenta)*1.01).toFixed(2).toString();
-    pizarraCompraEu.innerHTML = (+(valorCompra)*1.01).toFixed(2).toString();
-    dolar = new Moneda(+(valorCompra),+(valorVenta))
-    euro = new Moneda ((+(valorCompra)*1.01),(+(valorVenta)*1.01))
-
-}
-
-/* function pizarraOnline2(dolarVenta, dolarCompra, euroVenta, euroCompra){
-    pizarraVentaUsd.innerHTML = dolarVenta;
-    pizarraCompraUsd.innerHTML = dolarCompra;
-    pizarraVentaEu.innerHTML = euroVenta;
-    pizarraCompraEu.innerHTML = euroCompra;
-    dolar = new Moneda(dolarCompra, dolarVenta);
-    euro = new Moneda (euroCompra, euroVenta);
-
-} */
-
-
-function vender (){
-    contenedorCambio.innerHTML = "";
-    let resultado = document.createElement("h3");
-    divisa.value=="Dolar" && (valorTotal=(dolar.precioVendedor*montoDivisa.value)+(dolar.impuestoVenta(75)*montoDivisa.value),
-    avisoSweet("Usted debe Abonar",`$${valorTotal.toFixed(2)}`,"info" ));
-    
-    
-    divisa.value=="Euro" && (valorTotal=(euro.precioVendedor*montoDivisa.value)+(euro.impuestoVenta(75)*montoDivisa.value),
-        avisoSweet("Usted debe Abonar",`$${valorTotal.toFixed(2)}`,"info" ));
-    }
-    
-
-
 let botonCompra = document.getElementById("comprarDivisas");
-botonCompra.addEventListener("click", vender)
-
-function comprar(){
-    contenedorCambio.innerHTML = "";
-    let resultado = document.createElement("h3");
-    divisa.value=="Dolar" && (valorTotal=(dolar.precioComprador*montoDivisa.value),
-        avisoSweet("Usted Recibirá",`$${valorTotal.toFixed(2)}`,"info" ));
-        
-    
-    divisa.value=="Euro" && (valorTotal=(euro.precioComprador*montoDivisa.value),resultado.innerHTML = `Usted recibirá $${valorTotal.toFixed(2)}`,
-    avisoSweet("Usted Recibirá",`$${valorTotal.toFixed(2)}`,"info" ));
-}
-
 let botonVender = document.getElementById("venderDivisas");
-botonVender.addEventListener("click", comprar)
+let bolsaMonedas =[]
 
 
-/* ----------------------Consulta API--------------------------- */
-
-/* Primer alternativa consumienda API del Banco Central con el valor del dolar actualizado---!!!Utilizar la extensión "Allow CORS: Access-Control-Allow-Origin"
-para evitar problemas con Cors */
-
-fetch("https://api.estadisticasbcra.com/usd_of_minorista", {
-    headers:{
-        Authorization: "BEARER eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODk0NDk2NDIsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJuaWNvZG9mZm8yMDE1QGdtYWlsLmNvbSJ9.PdX7tnJQKDMYXV28ifoR0E4DuZ_CmjEheaKKXOC5H02xbW_0eVltudDb_irF-afMnl6okpeRvixe03kJeTuGyg",
-}
-})
-
+fetch("js/divisas.js")
 .then((response)=>response.json())
 .then((data)=>{
     console.log(data);
-    console.log(data[data.length-1].v);
-    pizarraOnline(((data[data.length-1].v).toFixed(2)).toString(), (((data[data.length-1].v)-((data[data.length-1].v)*0.05)).toFixed(2)).toString())
-})
-
-/* Segunda alternativa buscadndo los datos en un archivo de ruta relativa dentro del proyecto simulando una consulta a una API*/
-
-/* fetch("js/divisas.js")
-.then((response)=>response.json())
-.then((data)=>{
-    console.log(data);
-    pizarraOnline2(data[0].pv, data[0].pc, data[1].pv, data[1].pc)
+    for (const element of data) {
+        bolsaMonedas.push(element)
+    };
+    divisa(bolsaMonedas)
     
-}) */
-  
+    
+    })
 
+function divisa (array){
+    array.forEach(element => {
+        let opcion = document.createElement("option");
+        opcion.innerHTML=element.tipo;
+        opcion.value=element.tipo;
+        opcionMonedas.append(opcion);
+        let linea = document.createElement("tr");
+        linea.innerHTML= `<tr>
+                        <th scope="row">${element.tipo}</th>
+                        <td id="pizarraCompraUsd">$${element.pc}</td>
+                        <td id="pizarraVentaUsd">$${element.pv}</td>
+                        <td>${element.impuesto*100}%</td>
+    </tr>`;
+        piazarraOnline.append(linea)
+        
+    });
+}
+function vender() {
+    fetch("js/divisas.js")
+    .then((response)=>response.json())
+    .then((data)=>{
+        for (const element of data) {
+            opcionMonedas.value!=element.tipo ||avisoSweet("Usted Recibirá",`$${(montoDivisa.value*element.pc).toFixed(2)}`,"info" )
+            }
+        })
+    
+}
+
+botonVender.addEventListener("click", vender)
+
+function comprar() {
+    fetch("js/divisas.js")
+    .then((response)=>response.json())
+    .then((data)=>{
+        for (const element of data) {
+            opcionMonedas.value!=element.tipo ||avisoSweet("Usted debe Abonar",`$${((montoDivisa.value*element.pv)+((montoDivisa.value*element.pv)*element.impuesto)).toFixed(2)}`,"info" )
+            }
+        })
+    
+}
+
+botonCompra.addEventListener("click", comprar)
 
 
 /* ---------------------------Fin de Conversor de Monedas----------------- */
