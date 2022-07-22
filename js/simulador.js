@@ -99,6 +99,7 @@ let calificaSolaFirma=[];
 let calificaConGarantia=[];
 
 function agregar () {
+    if (dniEmpleado.value.length>0 && nombreEmpleado.value.length>0 && apellidoEmpleado.value.length>0 && salarioEmpleado.value.length>0 && antiguedadEmpleado.value.length>0){
     nominaCompleta.push(new Nomina(dniEmpleado.value ,nombreEmpleado.value, apellidoEmpleado.value, salarioEmpleado.value, antiguedadEmpleado.value));
     let dni = dniEmpleado.value
     for(let i =0; i<localStorage.length; i++){
@@ -130,7 +131,9 @@ function agregar () {
 
 
     }
-    formularioEmpleados.reset();
+    formularioEmpleados.reset()}else{
+        avisoSweet("Error", "Todos los campos deben estar completos", "error");
+    }
     }
     
 let botonSiguiente = document.getElementById("siguienteEmpleado");
