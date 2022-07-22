@@ -52,11 +52,12 @@
 <!-- -----------------------Inicio calculadora de Préstamo ----------------------------->
 
 
-
+    
     <div id="seccionPrestamos" class="invisible">
         <div class="container d-flex flex-column align-items-center" >
             <h1 class="text-center m-5">Calculadora de Préstamo </h1>
             <h3 class="text-center">Observa la tabla de referencias, ingresa el monto y las cuotas y presiona el botón CALCULAR.</h3>
+            
             
             <table  class="table table-primary table-striped col-12 m-5">
                 <thead>
@@ -176,22 +177,26 @@
     <!----------------- Inicio compra venta moneda extranjera---------------  -->
                 <div id="seccionDivisas" class="invisible">
                     <div class="d-flex flex-column align-items-center text-center">
-                    
                         <h2 class="m-5"><u>Compra y venta moneda extranjera</u></h2>
                         <h4>Pizarra de cotización de Dólares y Euros en el Mercado Único de Cambio en la República Argentina</h4>
                         <table  class="table table-primary table-striped col-8 m-5">
-                            <thead id="pizarraOnline">
-                            <tr>
-                                <th scope="col">Moneda</th>
-                                <th scope="col">Compra</th>
-                                <th scope="col">Venta</th>
-                                <th scope="col">Impuesto precio de Venta</th>
-                            </tr>
                             
+                            <thead id="pizarraOnline">
+                                <tr>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Compra</th>
+                                    <th scope="col">Venta</th>
+                                    <th scope="col">Impuesto precio de Venta</th>
+                                </tr>
                           
                             </thead>
                         </table>
-
+                        <div class="divLoader d-flex align-items-center flex-column" id="loader">
+                            <h2>Buscando Cotización</h2>
+                            <div class="spinner"></div>
+                            
+                        </div>
+                        
                         <form class="form-control" action="">
                             <input id="montoCambio" class="form-control" type="number" placeholder="Ingresa el monto para operar">
                             <select class="form-control" name="cambio" id="opcionMonedas">

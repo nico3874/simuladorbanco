@@ -54,6 +54,23 @@
     display: none;
 }
 
+#seccionDivisas{
+    justify-content: center;
+    
+    position:relative;
+    z-index: 1;
+}
+
+
+#seccionDivisas::before{
+    content: "";
+    background-color:rgba(255, 255, 255, 0.6) ;
+    z-index: -1;
+    position:absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .banner1{
     height: 600px;
     background-image:url(https://us.123rf.com/450wm/violetkaipa/violetkaipa1701/violetkaipa170100043/68619288-icono-de-dinero-en-la-mano-el-concepto-de-dinero.jpg?ver=6) ;
@@ -138,3 +155,36 @@
     width: 100%;
     text-align: center;
 }
+
+.loader{
+    font-size: auto;
+}
+
+.spinner {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 9px solid;
+    border-color: #dbdcef;
+    border-right-color: #474bff;
+    animation: spinner-d3wgkg 1s infinite linear;
+    position: relative;
+    
+ }
+ 
+ @keyframes spinner-d3wgkg {
+    to {
+       transform: rotate(1turn);
+    }
+ }
+
+ .divLoader{
+    text-align: center;
+    position:absolute;
+    border:solid 3px black;
+    background-color: aliceblue;
+    width: 600px;
+    margin-top: 40px;
+    
+    
+ }

@@ -1,4 +1,4 @@
-/* ----------------------Calculadora de Préstamos */
+/* ----------------------Calculadora de Préstamos----------------------------------------------- */
 
 
 function prestamo (){
@@ -18,8 +18,6 @@ function prestamo (){
             cuotasPrestamoSelect.value =="48" &&( tna=0.72,tem=tna/12, seguro=0.018,calcularTabla(monto.value,tem, cuotasPrestamoSelect.value, seguro, tna)))
        
 }
-
-
 
 
 function calcularTabla(capital, interes, cuotas,seguro,tna){
@@ -89,7 +87,6 @@ class Nomina{
         this.dni = dni;
     }
 }
-
 
 let formularioEmpleados = document.getElementById("formularioEmpleados")
 let dniEmpleado = document.getElementById("dniEmpleado");
@@ -223,22 +220,40 @@ let piazarraOnline = document.getElementById("pizarraOnline");
 let montoDivisa = document.getElementById("montoCambio");
 let botonCompra = document.getElementById("comprarDivisas");
 let botonVender = document.getElementById("venderDivisas");
+let loader = document.getElementById("loader")
+let listaMonedas = document.getElementById("listaMonedas")
 let bolsaMonedas =[]
 
+function consultaBD(){
+    loader.className="divLoader d-flex align-items-center flex-column visible";    
+    fetch("js/divisas.js")
+    .then((response)=>response.json())
+    .then((data)=>{
+        bolsaMonedas=[]
+        setTimeout(() => {
+            console.log(data);
+        for (const element of data) {
+            bolsaMonedas.push(element)
+        };
+        divisa(bolsaMonedas)
+        loader.className="invisible"
+        
+        }, 4000);
+        
+        
+        
+        })
+    }
 
-fetch("js/divisas.js")
-.then((response)=>response.json())
-.then((data)=>{
-    console.log(data);
-    for (const element of data) {
-        bolsaMonedas.push(element)
-    };
-    divisa(bolsaMonedas)
-    
-    
-    })
 
 function divisa (array){
+    piazarraOnline.innerHTML=`<tr>
+    <th scope="col">Moneda</th>
+    <th scope="col">Compra</th>
+    <th scope="col">Venta</th>
+    <th scope="col">Impuesto precio de Venta</th>
+</tr>`
+    opcionMonedas.innerHTML = "" 
     array.forEach(element => {
         let opcion = document.createElement("option");
         opcion.innerHTML=element.tipo;
@@ -254,6 +269,7 @@ function divisa (array){
         piazarraOnline.append(linea)
         
     });
+    
 }
 function vender() {
     fetch("js/divisas.js")
@@ -358,12 +374,14 @@ function carga(){
     cuerpoTablaCLientes.innerHTML="";
     let clave = dni.value;
     let valor;
-    (clave>0 && (nombreCliente.value).length>0 && (apellidoCliente.value).length>0 && validator.isEmail(emailCliente.value))?
-    (localStorage.getItem(clave.toString())?avisoSweet("Error", "El DNi ya existe", "error"):  
+    ((clave>0 && (nombreCliente.value).length>0 && (apellidoCliente.value).length>0 || avisoSweet("Error", "Debes llenar los campos Obligatorios", "error")) &&
+    (validator.isEmail(emailCliente.value)|| avisoSweet("Error", "Formato de email Inválido", "error"))) &&
+    (localStorage.getItem(clave.toString())?avisoSweet("Error", "El DNi ya existe", "error"):
+
     (valor = new ClienteBanco (dni.value, nombreCliente.value, apellidoCliente.value, emailCliente.value, telCliente.value, dirCliente.value),
     localStorage.setItem(clave.toString() , JSON.stringify(valor)),
     formCarga.reset(),
-    avisoSweet("OK!", "Cliente cargado correctamente", "success"))): avisoSweet("Error", "Debes llenar los campos Obligatorios", "error")
+    avisoSweet("OK!", "Cliente cargado correctamente", "success")))
     
     
 }
@@ -391,7 +409,7 @@ function borrar(){
     formCarga.reset());
 }
 
-window.scroll
+
 
 function listar() {
     avisoError.innerHTML="";
@@ -498,6 +516,7 @@ const verEmpresas = ( )=>{
 btnIngresoEmpresas.addEventListener("click", verEmpresas)
 
 const verDivisas = ( )=>{
+    consultaBD()
     seccionPrestamos.className="invisible";
     seccionEmpresas.className = "invisible";
     seccionDivisas.className = "";
